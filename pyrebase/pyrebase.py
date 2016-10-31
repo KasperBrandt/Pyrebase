@@ -544,12 +544,14 @@ class Stream:
 
     def start_stream(self, url, stream_handler):
         self.sse = ClosableSSEClient(url, session=self.make_session())
-        for msg in self.sse:
-            msg_data = json.loads(msg.data)
-            # don't return initial data
-            if msg_data:
-                msg_data["event"] = msg.event
-                stream_handler(msg_data)
+
+        # ##### IGNORE INITIAL DATA ##### #
+        # for msg in self.sse:
+        #     msg_data = json.loads(msg.data)
+        #     # don't return initial data
+        #     if msg_data:
+        #         msg_data["event"] = msg.event
+        #         stream_handler(msg_data)
 
     def close(self):
         while not self.sse:
